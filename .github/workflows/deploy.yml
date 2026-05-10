@@ -1,0 +1,24 @@
+name: Deploy JobFinderAI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Replace this with your preferred deployment method.
+      # For Railway, you can use the Railway CLI:
+      # - name: Install Railway
+      #   run: npm i -g @railway/cli
+      # - name: Deploy
+      #   run: railway up --detach
+      #   env:
+      #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      
+      - name: Dummy Deploy Step
+        run: echo "Deployment workflow configured. Add your provider's specific steps here."

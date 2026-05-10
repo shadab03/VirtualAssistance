@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  jobfinder:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    restart: unless-stopped

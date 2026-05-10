@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume - {{ job_title }}</title>
+    <link rel="stylesheet" href="resume.css">
+</head>
+<body>
+    <header>
+        <h1>Candidate Name</h1>
+        <p class="contact-info">Phone: +123456789 | Email: email@example.com | LinkedIn: linkedin.com/in/candidate</p>
+    </header>
+
+    <section class="summary">
+        <h2>Professional Summary</h2>
+        <p>{{ summary }}</p>
+    </section>
+
+    <section class="skills">
+        <h2>Core Competencies</h2>
+        <ul class="skills-list">
+            {% for skill in skills %}
+            <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section class="experience">
+        <h2>Key Achievements & Experience</h2>
+        <p class="job-context"><em>Tailored for the {{ job_title }} position at {{ company }}</em></p>
+        <ul class="achievements-list">
+            {% for achievement in achievements %}
+            <li>{{ achievement }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section class="projects">
+        <h2>Relevant Projects</h2>
+        {% for project in projects %}
+        <div class="project">
+            <h3>{{ project.name }}</h3>
+            <p><strong>Relevance:</strong> {{ project.relevance }}</p>
+            <p>{{ project.description }}</p>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="education">
+        <h2>Education</h2>
+        <p><strong>Bachelor of Science in Computer Science</strong> - University Name, YYYY</p>
+    </section>
+</body>
+</html>
