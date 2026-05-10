@@ -8,6 +8,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import sys
+import os
 from pathlib import Path
 
 from telegram.ext import ApplicationBuilder
@@ -45,6 +46,26 @@ def ensure_directories() -> None:
     (settings.output_dir / "resumes").mkdir(exist_ok=True)
 
 
+async def handle_web_request(reader, writer):
+    """Dummy web server to satisfy Render's Web Service port binding."""
+    try:
+        await reader.read(1024)
+        response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nJobFinderAI is running!"
+        writer.write(response.encode("utf-8"))
+        await writer.drain()
+    except Exception:
+        pass
+    finally:
+        writer.close()
+
+async def start_dummy_server():
+    """Start the dummy web server."""
+    port = int(os.environ.get("PORT", 8080))
+    server = await asyncio.start_server(handle_web_request, "0.0.0.0", port)
+    logging.getLogger(__name__).info(f"Dummy web server listening on port {port} (for Render free tier)")
+    async with server:
+        await server.serve_forever()
+
 async def post_init(application) -> None:
     """Called after the Application has been initialized."""
     # Initialize database
@@ -53,6 +74,9 @@ async def post_init(application) -> None:
     # Setup and start the scheduler
     scheduler = setup_scheduler(application)
     scheduler.start()
+
+    # Start dummy web server in the background for Render Free Tier
+    asyncio.create_task(start_dummy_server())
 
     logger = logging.getLogger(__name__)
     logger.info("🚀 JobFinderAI is ready!")
