@@ -36,7 +36,10 @@ class JobMatcher:
 
     def __init__(self) -> None:
         settings = get_settings()
-        self.client = AsyncOpenAI(api_key=settings.openai_api_key)
+        self.client = AsyncOpenAI(
+            api_key=settings.openai_api_key,
+            base_url=settings.openai_base_url
+        )
         self.model = settings.openai_model
         self._profile_cache: str | None = None
 
